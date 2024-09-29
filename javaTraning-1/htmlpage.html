@@ -1,0 +1,75 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Calendar</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid black;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="cal"></div>
+
+    <script>
+        function createCalendar(elem, year, month) {
+            const daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+            const table = document.createElement('table');
+
+            // Create table header with weekday names
+            const headerRow = document.createElement('tr');
+            for (let i = 0; i < daysOfWeek.length; i++) {
+                const th = document.createElement('th');
+                th.textContent = daysOfWeek[i];
+                headerRow.appendChild(th);
+            }
+            table.appendChild(headerRow);
+
+            let date = new Date(year, month - 1, 1);
+            let row = document.createElement('tr');
+
+            // Create empty cells before the first day
+            for (let i = 1; i < (date.getDay() || 7); i++) {
+                const emptyCell = document.createElement('td');
+                row.appendChild(emptyCell);
+            }
+
+            // Fill the calendar with the days of the month
+            while (date.getMonth() === month - 1) {
+                const cell = document.createElement('td');
+                cell.textContent = date.getDate();
+                row.appendChild(cell);
+
+                if (date.getDay() === 0) { // Sunday ends the row
+                    table.appendChild(row);
+                    row = document.createElement('tr');
+                }
+
+                date.setDate(date.getDate() + 1);
+            }
+
+            // Append the last row and the table to the element
+            table.appendChild(row);
+            elem.appendChild(table);
+        }
+
+        // Example call to create the calendar
+        createCalendar(document.getElementById('cal'), 2012, 9);
+    </script>
+
+</body>
+</html>
